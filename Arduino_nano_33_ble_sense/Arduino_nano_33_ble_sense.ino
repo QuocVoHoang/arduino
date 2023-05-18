@@ -9,7 +9,6 @@
 void ArrayAdd(int data);
 
 TinyGPSPlus gps;
-UART mobileSerial(D3, D2, NC, NC);  // TX RX
 UART gpsSerial(D5, D4, NC, NC);
 
 
@@ -103,10 +102,8 @@ void mobileFunction() {
       digitalWrite(LED_BUILTIN, HIGH);
 
       while (central.connected()) {
-        int value;
         if (switchCharacteristic.written()) {
           switchCharacteristic.value();
-
           Serial.println(switchCharacteristic.value());
           ArrayAdd(switchCharacteristic.value());
         }
@@ -153,11 +150,11 @@ void gpsFunction() {
         if (gps.speed.isValid()) {
           speed = gps.speed.kmph();
         }
-        // Serial.println("SPEEDDDDDD");
       }
-      rgb_speed(speed);
     }
-    ThisThread::sleep_for(3s);
+    rgb_speed(speed);
+    Serial.println(speed);
+    ThisThread::sleep_for(1s);
   }
 }
 
@@ -174,13 +171,12 @@ void setup() {
     while (1)
       ;
   }
-  BLE.setLocalName("Nano 33 BLE Sense");
+  BLE.setLocalName("bikerHelmet");
   ledService.addCharacteristic(switchCharacteristic);
   BLE.addService(ledService);
   switchCharacteristic.writeValue(0);
   BLE.advertise();
 
-  // mobileSerial.begin(9600);
   Serial1.begin(38400);
   gpsSerial.begin(9600);
 
