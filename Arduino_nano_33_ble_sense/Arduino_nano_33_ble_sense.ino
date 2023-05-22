@@ -32,14 +32,10 @@ bool leftSignal = false;
 bool rightSignal = false;
 bool ledOn = false;
 
-//
-
-
 BLEService ledService("180A");
 BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
 
 int myArray[4];
-//
 
 RGBLeds myRGBs_l = {
   .clear = &clearRGB,
@@ -59,16 +55,11 @@ RGBLeds_R myRGBs_r = {
 };
 RGBLeds_R *pRGB_r = &myRGBs_r;
 
-
-
-
-
 void rgbFunction() {
   for (;;) {
     if (ledOn) {
       if (leftSignal) {
         pRGB_r->clear_r();
-        // pRGB->accumulation(255, 0, 0);
         if (mobileDataArray[3] == 0) pRGB->slide(mobileDataArray[0], mobileDataArray[1], mobileDataArray[2]);
         if (mobileDataArray[3] == 1) pRGB->blink(mobileDataArray[0], mobileDataArray[1], mobileDataArray[2]);
         if (mobileDataArray[3] == 2) pRGB->accumulation(mobileDataArray[0], mobileDataArray[1], mobileDataArray[2]);
@@ -76,7 +67,6 @@ void rgbFunction() {
       } else strip.clear();
       if (rightSignal) {
         pRGB->clear();
-        // pRGB_r->slide_r(0, 255, 0);
         if (mobileDataArray[3] == 0) pRGB_r->slide_r(mobileDataArray[0], mobileDataArray[1], mobileDataArray[2]);
         if (mobileDataArray[3] == 1) pRGB_r->blink_r(mobileDataArray[0], mobileDataArray[1], mobileDataArray[2]);
         if (mobileDataArray[3] == 2) pRGB_r->accumulation_r(mobileDataArray[0], mobileDataArray[1], mobileDataArray[2]);
@@ -116,7 +106,6 @@ void mobileFunction() {
   ThisThread::sleep_for(220ms);
 }
 
-
 void blueFunction() {
   for (;;) {
     if (Serial1.available()) {
@@ -149,20 +138,18 @@ void gpsFunction() {
       if (gps.encode(gpsSerial.read())) {
         if (gps.speed.isValid()) {
           speed = gps.speed.kmph();
+        } else {
+          speed = 0;
         }
       }
     }
     rgb_speed(speed);
-    Serial.println(speed);
     ThisThread::sleep_for(1s);
   }
 }
 
 void setup() {
   Serial.begin(9600);
-
-
-
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);

@@ -1,11 +1,11 @@
 #include <SoftwareSerial.h>
 
-#define LeftButton 5
-#define RightButton 4
-#define Signal_Left 8
-#define Signal_Right 7
+#define LeftButton 10
+#define RightButton 12
+#define Signal_Left 6
+#define Signal_Right 8
 
-SoftwareSerial SigNal(3, 2);
+SoftwareSerial SigNal(3, 2); //RX TX
 
 bool leftState, rightState;
 int leftNum = 0, rightNum = 0;
@@ -24,11 +24,13 @@ void loop() {
   leftState = digitalRead(LeftButton);
 
   if (leftState == LOW) {
+    delay(100);
     while (digitalRead(LeftButton) == LOW)
       ;
     flag_l ^= 1;
 
     leftNum++;
+    rightNum = 0;
     if (leftNum == 1) {
       SigNal.print('l');
       Serial.println('l');
@@ -47,12 +49,14 @@ void loop() {
 
   rightState = digitalRead(RightButton);
   if (rightState == LOW) {
+    delay(100);
     while (digitalRead(RightButton) == LOW)
       ;
 
     flag_r ^= 1;
 
     rightNum++;
+    leftNum = 0;
     if (rightNum == 1) {
       SigNal.print('r');
       Serial.println('r');
