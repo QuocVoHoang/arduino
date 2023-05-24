@@ -134,16 +134,15 @@ void blueFunction() {
 void gpsFunction() {
   for (;;) {
     // gpsSerial.begin(9600);
-    while (gpsSerial.available()) {
-      if (gps.encode(gpsSerial.read())) {
-        if (gps.speed.isValid()) {
-          speed = gps.speed.kmph();
-        } else {
-          speed = 0;
-        }
-      }
-    }
-    rgb_speed(speed);
+    // while (gpsSerial.available()) {
+    //   if (gps.encode(gpsSerial.read())) {
+    //     if (gps.speed.isValid()) {
+    //       speed = gps.speed.kmph();
+    //     }
+    //   }
+    //   rgb_speed(speed);
+    // }
+    rgb_speed(mobileDataArray[3]);
     ThisThread::sleep_for(1s);
   }
 }

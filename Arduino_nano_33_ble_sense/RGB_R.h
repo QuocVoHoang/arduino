@@ -78,11 +78,13 @@ void parallel2string_r(int red, int green, int blue)
   for(int i=0; i<NUM_LEDS_R/2; i++)
   {
       strip1.setPixelColor(i, strip1.Color(red, green, blue));
-      delay(50);
+      strip1.setPixelColor(NUM_LEDS/2+i, strip1.Color(red, green, blue));
       strip1.show();
-      strip1.setPixelColor(NUM_LEDS_R/2+i, strip1.Color(red, green, blue));
       delay(50);
+      strip1.setPixelColor(i, strip1.Color(0, 0, 0));
+      strip1.setPixelColor(NUM_LEDS/2+i, strip1.Color(0, 0, 0));
       strip1.show();
+      delay(50);
   }
 }
 
